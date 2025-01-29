@@ -1,0 +1,368 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HR Claim Portal</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+
+        body {
+            color: #333;
+            padding: 20px;
+        }
+
+
+        .banner {
+            background-color: #3b145b;
+            color: white;
+            text-align: center;
+            padding: 30px;
+            border-radius: 30px;
+            margin-bottom: 30px;
+        }
+
+
+        .banner h1 {
+            font-size: 36px;
+            font-weight: 600;
+        }
+
+
+        .card-container {
+            display: flex;
+            gap: 30px;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin-bottom: 30px;
+        }
+
+
+        .card {
+            background-color: white;
+            width: 350px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            text-align: left;
+            transition: transform 0.3s ease;
+            position: relative;
+        }
+
+
+        .card:hover {
+            transform: scale(1.05);
+        }
+
+
+        .card h3 {
+            font-size: 24px;
+            margin-bottom: 10px;
+            color: #4facfe;
+        }
+
+
+        .card p {
+            font-size: 16px;
+            color: #555;
+            margin-right: 10px;
+            flex-grow: 1;
+        }
+
+
+        .view-claims-btn {
+            background-color: #1e0d84;
+            color: white;
+            width: 140px;
+            font-size: 14px;
+            padding: 8px 16px;
+            border-radius: 5px;
+            text-decoration: none;
+            display: inline-block;
+            margin-left: 10px;
+        }
+
+
+        .view-claims-btn:hover {
+            background-color: #37ab60;
+        }
+
+
+        .card-content {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+
+
+        .claims-list {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+
+        .claim-item {
+            background-color: #f9f9f9;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+
+        .claim-item .claim-info {
+            flex-grow: 1;
+        }
+
+
+        .claim-item .claim-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+
+        .approve-btn,
+        .reject-btn {
+            padding: 8px 16px;
+            border: none;
+            cursor: pointer;
+            font-size: 14px;
+            border-radius: 5px;
+            margin: 5px 5px;
+            width: 100px;
+        }
+
+
+        .approve-btn {
+            background-color: #28a745;
+            color: white;
+        }
+
+
+        .approve-btn:hover {
+            background-color: #218838;
+        }
+
+
+        .reject-btn {
+            background-color: #dc3545;
+            color: white;
+        }
+
+
+        .reject-btn:hover {
+            background-color: #c82333;
+        }
+
+
+        @media (max-width: 768px) {
+            .banner h1 {
+                font-size: 28px;
+            }
+
+
+            .card-container {
+                flex-direction: column;
+                align-items: center;
+            }
+
+
+            .card {
+                width: 90%;
+                margin-bottom: 20px;
+            }
+
+
+            .claims-list {
+                font-size: 14px;
+            }
+
+
+            .approve-btn,
+            .reject-btn {
+                padding: 6px 12px;
+                font-size: 14px;
+            }
+
+
+            .view-claims-btn {
+                font-size: 12px;
+                padding: 6px 12px;
+            }
+        }
+    </style>
+</head>
+
+
+<body>
+
+
+    <div class="banner">
+        <h1>HR Claim Portal</h1>
+        <p>Review and take action on employee claim requests</p>
+    </div>
+
+
+    <div class="card-container" id="card-container">
+        <div class="card" data-claim-type="Medical Claims">
+            <div class="card-content">
+                <div>
+                    <h3>Medical Claims</h3>
+                    <p id="medical-claims-pending">0 claims pending</p>
+                </div>
+                <a href="javascript:void(0);" class="view-claims-btn" onclick="showClaims('Medical Claims')">View Claims</a>
+            </div>
+        </div>
+        <div class="card" data-claim-type="Travel Claims">
+            <div class="card-content">
+                <div>
+                    <h3>Travel Claims</h3>
+                    <p id="travel-claims-pending">0 claims pending</p>
+                </div>
+                <a href="javascript:void(0);" class="view-claims-btn" onclick="showClaims('Travel Claims')">View Claims</a>
+            </div>
+        </div>
+        <div class="card" data-claim-type="Expense Claims">
+            <div class="card-content">
+                <div>
+                    <h3>Expense Claims</h3>
+                    <p id="expense-claims-pending">0 claims pending</p>
+                </div>
+                <a href="javascript:void(0);" class="view-claims-btn" onclick="showClaims('Expense Claims')">View Claims</a>
+            </div>
+        </div>
+        <div class="card" data-claim-type="Insurance Claims">
+            <div class="card-content">
+                <div>
+                    <h3>Insurance Claims</h3>
+                    <p id="insurance-claims-pending">0 claims pending</p>
+                </div>
+                <a href="javascript:void(0);" class="view-claims-btn" onclick="showClaims('Insurance Claims')">View Claims</a>
+            </div>
+        </div>
+        <div class="card" data-claim-type="Leave Claims">
+            <div class="card-content">
+                <div>
+                    <h3>Leave Claims</h3>
+                    <p id="leave-claims-pending">0 claims pending</p>
+                </div>
+                <a href="javascript:void(0);" class="view-claims-btn" onclick="showClaims('Leave Claims')">View Claims</a>
+            </div>
+        </div>
+        <div class="card" data-claim-type="Educational Claims">
+            <div class="card-content">
+                <div>
+                    <h3>Educational Claims</h3>
+                    <p id="educational-claims-pending">0 claims pending</p>
+                </div>
+                <a href="javascript:void(0);" class="view-claims-btn" onclick="showClaims('Educational Claims')">View Claims</a>
+            </div>
+        </div>
+    </div>
+
+
+    <div id="claims-list-container" style="display: none;">
+        <h2>Claims for <span id="claim-type-header"></span></h2>
+        <div class="claims-list" id="claims-list-body"></div>
+    </div>
+
+
+    <script>
+        // Function to fetch claims data from localStorage
+        function getClaimsData(claimType) {
+            const claims = JSON.parse(localStorage.getItem("claims")) || [];
+            return claims.filter(claim => claim.claimType === claimType);
+        }
+
+
+        function showClaims(claimType) {
+            const claimListContainer = document.getElementById('claims-list-container');
+            const claimTypeHeader = document.getElementById('claim-type-header');
+            const claimsListBody = document.getElementById('claims-list-body');
+
+
+            claimTypeHeader.textContent = claimType;
+            claimsListBody.innerHTML = ''; // Clear previous claims
+
+
+            // Get filtered claims from localStorage
+            const claims = getClaimsData(claimType);
+
+
+            // Create claim items dynamically based on localStorage data
+            claims.forEach(claim => {
+                const claimItem = document.createElement('div');
+                claimItem.classList.add('claim-item');
+                claimItem.innerHTML = `
+                    <div class="claim-info">
+                        <p><strong>Employee:</strong> ${claim.empName}</p>
+                        <p><strong>Description:</strong> ${claim.claimDescription}</p>
+                        <p><strong>Amount:</strong> ${claim.claimAmount}</p>
+                        <p><strong>Date:</strong> ${claim.claimDate}</p>
+                    </div>
+                    <div class="claim-actions">
+                        <button class="approve-btn" onclick="approveClaim('${claim.empName}', '${claimType}')">Approve</button>
+                        <button class="reject-btn" onclick="rejectClaim('${claim.empName}', '${claimType}')">Reject</button>
+                    </div>
+                `;
+                claimsListBody.appendChild(claimItem);
+            });
+
+
+            claimListContainer.style.display = 'block';
+        }
+
+
+        function approveClaim(employee, claimType) {
+            alert(`Claim approved for ${employee} under ${claimType}`);
+        }
+
+
+        function rejectClaim(employee, claimType) {
+            alert(`Claim rejected for ${employee} under ${claimType}`);
+        }
+
+
+        function updateClaimCounts() {
+            const claimTypes = [
+                'Medical Claims',
+                'Travel Claims',
+                'Expense Claims',
+                'Insurance Claims',
+                'Leave Claims',
+                'Educational Claims'
+            ];
+
+
+            claimTypes.forEach(claimType => {
+                const claims = getClaimsData(claimType);
+                const count = claims.length;
+                const claimCountElement = document.getElementById(`${claimType.toLowerCase().replace(/\s+/g, '-')}-pending`);
+                claimCountElement.textContent = `${count} claims pending`;
+            });
+        }
+        window.onload = function() {
+            updateClaimCounts();
+        };
+
+
+    </script>
+
+
+</body>
+
+
+</html>
